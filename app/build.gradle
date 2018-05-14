@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+kapt {
+    generateStubs = true
+}
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
+    defaultConfig {
+        applicationId "com.darkkillen.kotlinaac"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding{
+        enabled=true
+    }
+
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.google.com' }
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support.constraint:constraint-layout:1.0.2"
+    implementation "com.android.support:recyclerview-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
+
+    compile "android.arch.lifecycle:runtime:$aac_runtime_version"
+    compile "android.arch.lifecycle:extensions:$aac_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$aac_version"
+    compile "android.arch.persistence.room:runtime:$aac_version"
+    kapt "android.arch.persistence.room:compiler:$aac_version"
+
+    compile "com.google.dagger:dagger:2.11"
+    kapt "com.google.dagger:dagger-compiler:2.11"
+    kapt "com.android.databinding:compiler:$plugin_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
+    provided "org.glassfish:javax.annotation:10.0-b28"
+    provided "javax.annotation:jsr250-api:1.0"
+    compile "javax.inject:javax.inject:1"
+
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
+    // test
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "com.android.support.test:runner:1.0.1"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+}
